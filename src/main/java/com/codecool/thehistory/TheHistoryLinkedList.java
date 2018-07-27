@@ -10,12 +10,14 @@ public class TheHistoryLinkedList implements TheHistory {
 
     @Override
     public void add(String text) {
-        wordsLinkedList = Arrays.asList(text.split(" "));
+        wordsLinkedList = new LinkedList(Arrays.asList(text.split(" ")));
     }
 
     @Override
     public void removeWord(String wordToBeRemoved) {
-        //TODO: check the TheHistory interface for more information
+        List<String> removingWord = new LinkedList<>();
+        removingWord.add(wordToBeRemoved);
+        wordsLinkedList.removeAll(removingWord);
     }
 
     @Override
@@ -25,17 +27,52 @@ public class TheHistoryLinkedList implements TheHistory {
 
     @Override
     public void clear() {
-        //TODO: check the TheHistory interface for more information
+        wordsLinkedList = new LinkedList<>();
     }
 
     @Override
     public void replaceOneWord(String from, String to) {
-        //TODO: check the TheHistory interface for more information
+        ListIterator it = wordsLinkedList.listIterator();
+        while (it.hasNext()) {
+            if (from.equals(it.next())) {
+                it.remove();
+                it.add(to);
+            }
+        }
     }
 
     @Override
     public void replaceMoreWords(String[] fromWords, String[] toWords) {
-        //TODO: check the TheHistory interface for more information
+        ListIterator iterator = wordsLinkedList.listIterator();
+        while (iterator.hasNext()) {
+            boolean findFullMatch = true;
+            int offset = 0;
+            if (iterator.next().equals(fromWords[0])) {
+                for (int i = 1; i < fromWords.length; i++) {
+                    offset++;
+                    if (iterator.hasNext() && !iterator.next().equals(fromWords[i])) {
+                        findFullMatch = false;
+                        iterator.previous();
+                        break;
+                    }
+                    if (!iterator.hasNext() && i < fromWords.length - 1) {
+                        findFullMatch = false;
+                    }
+                }
+            } else {
+                findFullMatch = false;
+            }
+            if (findFullMatch) {
+                for (String fromWord : fromWords) {
+                    iterator.previous();
+                    iterator.remove();
+                }
+                for (String toWord : toWords) {
+                    iterator.add(toWord);
+                }
+            }
+        }
+
     }
 
     @Override
