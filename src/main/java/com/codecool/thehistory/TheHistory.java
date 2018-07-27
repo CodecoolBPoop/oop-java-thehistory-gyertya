@@ -64,3 +64,23 @@ public interface TheHistory {
         }
     }
 }
+
+class Common {
+    public int[] getIndexesFromWord(String indexes) {
+        long start = System.currentTimeMillis();
+        int[] indexesInt = new int[1];
+        boolean isLast = false;
+        if (indexes != "") {
+            String[] indexesString = indexes.split(" ");
+            indexesInt = new int[indexesString.length];
+
+            for (int i = 0; i < indexesString.length; i++) {
+                indexesInt[i] = Integer.parseInt(indexesString[i]);
+            }
+        } else {
+            indexesInt[0] = -1;
+        }
+//        System.out.println("  Find indexes time: " + (System.currentTimeMillis() - start) + " ms");
+        return indexesInt;
+    }
+}
